@@ -405,7 +405,7 @@ sorry,type wma is not support
 
 UML 描述如图 4-6 所示
 
-<img src="./images/observer.png" alt="observer" style="zoom: 50%;" />
+<img src="./images/observer1.png" alt="observer" style="zoom: 50%;" />
 
 图 4-6
 
