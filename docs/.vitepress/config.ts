@@ -4,7 +4,10 @@ import { version } from '../../package.json'
 export default defineConfig({
   title: '前端开发必知必会',
   description: '前端开发必知必会',
-  base: '/front-end-development-must-know',
+  base:
+    process.env.PULISH_ENV === 'production'
+      ? '/'
+      : '/front-end-development-must-know',
   lang: 'en-US',
   head: [['link', { rel: 'icon', href: 'favicon.ico' }]],
   markdown: {
