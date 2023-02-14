@@ -6,13 +6,15 @@
   "scripts": {
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:serve": "vitepress serve docs"
+    "docs:serve": "vitepress serve docs",
+    "vercel": "vercel --prod"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^18.11.18",
+    "vercel": "^28.15.4",
     "vitepress": "^1.0.0-alpha.36",
     "vue": "^3.2.45"
   }

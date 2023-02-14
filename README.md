@@ -31,3 +31,67 @@
 
 > 部署组织下的仓库需要收费，可以免费体验 14 天
 > Your trial expires in 14 days. To maintain access to premium features, upgrade to Pro.
+
+> 可以登录网页，然后新建项目，选择仓库，拉取部署，
+>
+> 这里演示下项目下输入命令来完成部署。借助vercel 提供相对应的脚手架 **[CLI](https://vercel.com/docs/cli)** 供开发者使用。
+
+- 安装`vercel`到项目中
+
+  ```
+  yarn add vercel
+  ```
+
+- `package.json`添加`script`
+
+  ```
+  "vercel": "vercel --prod"
+  ```
+
+  第一次将进行登录授权，选择对应平台，将会自动打开浏览器完成授权，接着将会确认一些信息，一般默认回车即可，下为执行结果
+
+  ```
+  λ npm run vercel
+  
+  > front-end-development-must-know@1.0.0 vercel
+  > vercel --prod
+  
+  Vercel CLI 28.15.4
+  ? Set up and deploy “E:\code\myProject\books\front-end-development-must-know”? [Y/n] y
+  ? Which scope do you want to deploy to? ga23187
+  ? Link to existing project? [y/N] n
+  ? What’s your project’s name? front-end-development-must-know
+  ? In which directory is your code located? ./
+  Local settings detected in vercel.json:
+  Auto-detected Project Settings (VitePress):
+  - Build Command: vitepress build docs
+  - Development Command: vitepress dev docs --port $PORT
+  - Install Command: `yarn install`, `pnpm install`, or `npm install`
+  - Output Directory: docs/.vitepress/dist
+  ? Want to modify these settings? [y/N] n
+  �  Linked to ga23187/front-end-development-must-know (created .vercel and added it to .gitignore)
+  �  Inspect: https://vercel.com/ga23187/front-end-development-must-know/4FsxbcBeX46tQm8z3RFPSayGEMgn [4s]
+  ✅  Production: https://front-end-development-must-know-pink.vercel.app [1m]
+  ```
+
+  执行完毕后，将会在根目录创建.vercel 文件夹，其中 project.json 中存放 orgId 和 projectId，下面将会用到。此时在[dashboard](https://vercel.com/dashboard)中也能看到该项目被部署了。
+
+  不过这样部署上去的代码，并不会连接 git 仓库，需要到控制台中选择仓库。
+
+  ![image-20230214205102407](images/image-20230214205102407.png)
+
+  如果想在 github actions 中使用，则新建一个 steps，并到github上设置好对应的变量。
+
+  ![image-20230214210020738](images/image-20230214210020738.png)
+
+  其中还有一个 VERCEL_TOKEN 需要到 [Vercel Settings Tokens](https://vercel.com/account/tokens) 新建一个 Token。
+
+  ```yaml
+      - name: Deploy to Vercel
+          run: npx vercel --token ${{secrets.VERCEL_TOKEN}} --prod
+          env:
+              VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+              VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+              VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  ```
+
