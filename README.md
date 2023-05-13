@@ -24,8 +24,25 @@
   
     解决办法有2种
   
-    1. 通过在 GitHub.com 的右上角，单击你的个人资料照片，然后单击“你的组织”，在“工作流权限”下，选择是要让 `GITHUB_TOKEN` 对所有范围具有读写访问权限
+    1. 通过在 GitHub.com 的右上角，单击你的个人资料照片，然后单击“你的组织”，进入组织"设置"，点击左侧的`Actions下的General `，在“工作流权限”下，选择是要让 `GITHUB_TOKEN` 对所有范围具有读写访问权限。
+    
+       > 需要注意的是这种方式是全局的，会把组织下所有仓库的`workflow permissions`设置成可读写的。默认仓库的`workflow permissions`是只读的
+    
     2. 通过编辑工作流文件中的 `permissions` 键来修改授予 `GITHUB_TOKEN` 的权限
+    
+       ```
+       jobs:
+         deploy:
+           runs-on: ubuntu-latest
+           permissions:
+             contents: write
+           steps:
+             - uses: actions/checkout@v2
+             - uses: actions/setup-node@v3
+             .....
+       ```
+    
+       
 
 ## vercel 部署
 
