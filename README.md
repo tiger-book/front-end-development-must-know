@@ -46,12 +46,18 @@
 
 ## vercel 部署
 
+### 方式一
+
+登录vercel网页端，然后新建项目，选择仓库，拉取部署。vercel与github仓库关联后，每次修改github仓库就会自动部署vercel。
+
 > 部署组织下的仓库需要收费，可以免费体验 14 天
 > Your trial expires in 14 days. To maintain access to premium features, upgrade to Pro.
-
-> 可以登录网页，然后新建项目，选择仓库，拉取部署，
 >
-> 这里演示下项目下输入命令来完成部署。借助vercel 提供相对应的脚手架 **[CLI](https://vercel.com/docs/cli)** 供开发者使用。
+> 没钱的话那么咋们还是部署到个人名下吧，借助vercel cli推送到个人名下。
+
+### 方式二
+
+ 借助vercel 提供相对应的脚手架 **[CLI](https://vercel.com/docs/cli)** 来部署。
 
 - 安装`vercel`到项目中
 
@@ -91,18 +97,22 @@
   ✅  Production: https://front-end-development-must-know-pink.vercel.app [1m]
   ```
 
-  执行完毕后，将会在根目录创建.vercel 文件夹，其中 project.json 中存放 orgId 和 projectId，下面将会用到。此时在[dashboard](https://vercel.com/dashboard)中也能看到该项目被部署了。
+  执行完毕后，将会在根目录创建.vercel 文件夹，其中 project.json 中存放 orgId 和 projectId，可以用于`github action`。同时在[dashboard](https://vercel.com/dashboard)中也能看到该项目被部署了。
 
-  不过这样部署上去的代码，并不会连接 git 仓库，需要到控制台中选择仓库。
+  不过这样部署上去的代码，并不会连接 git 仓库，需要到控制台中选择对应的github仓库，选择完成后每次github仓库更新vercel也会同步触发部署。
 
   ![image-20230214205102407](images/image-20230214205102407.png)
 
-  如果想在 github actions 中使用，则新建一个 steps，并到github上设置好对应的变量。
+  这里我们不连接到github仓库，而是配置一个step，如下。
+
+  如果想在 github actions 中使用，则新建一个 steps，并到github上设置好对应的变量，但是其实你做了链接git仓库的操作后，每次更新github仓库就会触发vercel。
+
+  > TODO 链接到github仓库后，设置vercel触发的时机，不要每次提交文件都触发部署？
 
   ![image-20230214210020738](images/image-20230214210020738.png)
-
+  
   其中还有一个 VERCEL_TOKEN 需要到 [Vercel Settings Tokens](https://vercel.com/account/tokens) 新建一个 Token。
-
+  
   ```yaml
       - name: Deploy to Vercel
           run: npx vercel --token ${{secrets.VERCEL_TOKEN}} --prod
@@ -111,4 +121,13 @@
               VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
               VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   ```
+
+> 警告：如果 10 天内没有使用令牌的活动，令牌将被视为不活动并因此过期。
+>
+> **WARNING:** If there has been no activity using the token for **10 days**, the token is deemed inactive and expires as a result.
+>
+> https://vercel.com/guides/why-is-vercel-cli-asking-me-to-log-in
+>
+> If you'd like to keep the token active, make sure to use the CLI at least once every 10 days.
+> 如果您想使令牌保持活动状态，请确保至少每 10 天使用一次 CLI。
 
